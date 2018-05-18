@@ -1,0 +1,28 @@
+nginx:
+  image: nginx:latest
+  ports:
+    - "8088:80"
+  links:
+    - "php-fpm"
+  volumes:
+    - ../:/var/www/web
+    - ./conf:/etc/nginx/conf.d
+mysql:
+  image: mysql:latest
+  volumes:
+    - ./mysql:/var/lib/mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=123456
+php-fpm:
+  build: ./
+  links: 
+    - "mysql"
+  volumes:
+    - ../:/var/www/web
+phpadmin:
+  image: nazarpc/phpmyadmin
+  links:
+    - "mysql:mysql"
+  ports:
+    - "8081:80"
+
